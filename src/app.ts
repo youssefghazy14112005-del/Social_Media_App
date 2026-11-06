@@ -1,6 +1,8 @@
 import express from 'express';
 import authenticationController from './modules/authentication/authentication.controller.js';
 import userController from './modules/user/user.controller.js';
+import postController from './modules/post/post.controller.js';
+import commentController from './modules/comment/comment.controller.js';
 import { globalErrorHandling } from './middleware/error.middleware.js';
 import { ORIGINS } from './config.js';
 const app = express();
@@ -18,6 +20,8 @@ app.use((req, res, next) => {
 app.get('/health', (_req, res) => res.json({ success: true, data: { status: 'ok', environment: process.env.NODE_ENV ?? 'development' } }));
 app.use('/api/v1/auth', authenticationController);
 app.use('/api/v1/users', userController);
+app.use('/api/v1/posts', postController);
+app.use('/api/v1', commentController);
 app.use((_req, _res, next) => next(Object.assign(new Error('Route not found'), { status: 404 })));
 app.use(globalErrorHandling);
 export default app;
